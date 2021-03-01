@@ -4,7 +4,8 @@ class Counter extends Component {
     //state is a special property is React applications
     //that contains any data the component needs
     state = {
-        count: 1,
+        value: this.props.value,
+        //value: this.props.value,
         tagList: ["tag1", "tag2", "tag3"],
         //tagList: [],
     };
@@ -12,8 +13,8 @@ class Counter extends Component {
         if (this.state.tagList.length === 0) return <p>No tags</p>;
         return this.state.tagList.map((tag) => <li key={tag}>{tag}</li>);
     }
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
         //Using the bind function this always references the current object
         this.handleIncrementOnClickEvent = this.handleIncrementOnClickEvent.bind(
             this
@@ -24,19 +25,23 @@ class Counter extends Component {
         //Since this function id a standalone function object and not an Counter object method
         //this operator is undefined and thus this line throws error.
         //One way to solve it is by binding the function to this object in the class constructor
-        console.log(this.state.count);
+        console.log(this.state.value);
     }
     //Another way to solve the this binding issue is by using arrow functions
     handleIncrementOnClickEventArrow = (eventArgs) => {
         //Updating the state is done by using setState() method inherited from Component class
         //This method tells react that we are updating the state and it brings the DOM in sync with virtual DOM
-        this.setState({ count: this.state.count + 1 });
+        this.setState({ value: this.state.value + 1 });
         console.log(
-            `Arrow click ${this.state.count} event args : ${eventArgs}`
+            `Arrow click ${this.state.value} event args : ${eventArgs}`
         );
     };
 
     render() {
+        // this.props is javascript object that holds attributes of the counter generated in counters.jsx
+        //It can be used to set default values in the state {} object
+        console.log("prop " + this.props.value);
+
         // 1. This is a jsx expression that Babel compiles to a call to React.createElement()
         //    Although we dont explicitly call React.createElement we nee to import React
         //    so that it can be called behind the scenes.
@@ -53,13 +58,13 @@ class Counter extends Component {
             //4. When adding a list, key={} attribute is given for React to identify each item in the list
             //   So that when the state of the element changes in virtual DOM it knows where to update in actual DOM
             <React.Fragment>
-                <h1>Hello React</h1>
+                {/* <h1>Hello React</h1> */}
                 <span className={this.getClassType()}>
                     {this.validateCount()}
                 </span>
                 <button
                     onClick={() =>
-                        this.handleIncrementOnClickEventArrow("eventArgs")
+                        this.handleIncrementOnClickEventArrow("sampleEventArgs")
                     } //We pass reference to the function and dont call
                     //But what if we want to pass event arguments? then we use arrow functions inline as shown above
                     className="btn btn-secondary btn-sm"
@@ -70,7 +75,8 @@ class Counter extends Component {
                     {
                         /* {this.state.tagList.map((tag) => (
                         <li key={tag}>{tag}</li>
-                    ))} */ this.rendertags()
+                    ))} */
+                        // this.rendertags()
                     }
                 </ul>
             </React.Fragment>
@@ -78,12 +84,12 @@ class Counter extends Component {
     }
     getClassType() {
         let className = "badge m-2 badge-";
-        className += this.state.count === 0 ? "danger" : "success";
+        className += this.state.value === 0 ? "danger" : "success";
         return className;
     }
 
     validateCount() {
-        const { count } = this.state;
+        const { value: count } = this.state;
         return count === 0 ? "Zero" : count;
     }
 }
