@@ -27,8 +27,13 @@ class Counter extends Component {
         console.log(this.state.count);
     }
     //Another way to solve the this binding issue is by using arrow functions
-    handleIncrementOnClickEventArrow = () => {
-        console.log(`Arrow click ${this.state.count}`);
+    handleIncrementOnClickEventArrow = (eventArgs) => {
+        //Updating the state is done by using setState() method inherited from Component class
+        //This method tells react that we are updating the state and it brings the DOM in sync with virtual DOM
+        this.setState({ count: this.state.count + 1 });
+        console.log(
+            `Arrow click ${this.state.count} event args : ${eventArgs}`
+        );
     };
 
     render() {
@@ -53,7 +58,10 @@ class Counter extends Component {
                     {this.validateCount()}
                 </span>
                 <button
-                    onClick={this.handleIncrementOnClickEventArrow} //We pass reference to the function and dont call
+                    onClick={() =>
+                        this.handleIncrementOnClickEventArrow("eventArgs")
+                    } //We pass reference to the function and dont call
+                    //But what if we want to pass event arguments? then we use arrow functions inline as shown above
                     className="btn btn-secondary btn-sm"
                 >
                     Increment
