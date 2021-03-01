@@ -13,13 +13,15 @@ class Counter extends Component {
         if (this.state.tagList.length === 0) return <p>No tags</p>;
         return this.state.tagList.map((tag) => <li key={tag}>{tag}</li>);
     }
-    constructor(props) {
-        super(props);
-        //Using the bind function this always references the current object
-        this.handleIncrementOnClickEvent = this.handleIncrementOnClickEvent.bind(
-            this
-        );
-    }
+    //if there is a constructor defined, then it should be defined with props as parameter
+    //So that the properties could be used to set state {} object
+    // constructor(props) {
+    //     super(props);
+    //     //Using the bind function this always references the current object
+    //     this.handleIncrementOnClickEvent = this.handleIncrementOnClickEvent.bind(
+    //         this
+    //     );
+    // }
     handleIncrementOnClickEvent() {
         console.log("Increment clicked");
         //Since this function id a standalone function object and not an Counter object method
