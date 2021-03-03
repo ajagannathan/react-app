@@ -11,7 +11,16 @@ class Counters extends Component {
         children_array: ["child 1", "child 2", "child 3"],
     };
     handleIncrement = (counter) => {
-        console.log(counter);
+        //The spread operator clones the array/object
+        // the objects in the new array counters is exactly
+        // the same as the counter_array
+        //This is a bad practice
+        //Instead we clone the counter object we receive
+        const counters = [...this.state.counter_array];
+        const index = counters.indexOf(counter);
+        counters[index] = { ...counter };
+        counters[index].value++;
+        this.setState({ counter_array: counters });
     };
     handleDelete = (counter_id) => {
         const updatedCounterArray = this.state.counter_array.filter(
@@ -30,12 +39,14 @@ class Counters extends Component {
     render() {
         return (
             <div>
-                <button
-                    className="btn btn-primary btn-sm m-2"
-                    onClick={this.handleReset}
-                >
-                    Reset
-                </button>
+                <div>
+                    <button
+                        className="btn btn-primary btn-sm m-2"
+                        onClick={this.handleReset}
+                    >
+                        Reset
+                    </button>
+                </div>
                 {this.state.counter_array.map((counterObj) => (
                     <Counter
                         key={counterObj.id}
