@@ -115,7 +115,7 @@ class Counter extends Component {
     getClassType() {
         let className = "badge m-2 badge-";
         //className += this.state.value === 0 ? "danger" : "success";
-        className += this.props.counter.value === 0 ? "danger" : "success";
+        className += this.props.counter.value === 0 ? "warning" : "success";
         return className;
     }
 
