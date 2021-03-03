@@ -20,13 +20,16 @@ class Counters extends Component {
     render() {
         return (
             <div>
-                {this.state.counter_array.map((count) => (
+                {this.state.counter_array.map((counterObj) => (
                     <Counter
-                        key={count.id}
-                        value={count.value}
-                        id={count.id} //Although key and id attributes are the same, the key is inaccessible
+                        key={counterObj.id}
+                        //value={count.value}       //Instead of many attributes its better to pass the
+                        //id={count.id}             //counter Object (counterObj) into the counter attribute
+                        //This encapsulates the properties of counter.
+                        //Although key and id attributes are the same, the key is inaccessible
                         //from this.props. It is used internally by react to update the DOM.
                         //So we must provide another id to reference the component
+                        counter={counterObj}
                         onDelete={this.handleDelete}
                     >
                         {this.state.children_array.map((child) => (
