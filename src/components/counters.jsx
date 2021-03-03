@@ -10,6 +10,9 @@ class Counters extends Component {
         ],
         children_array: ["child 1", "child 2", "child 3"],
     };
+    handleIncrement = (counter) => {
+        console.log(counter);
+    };
     handleDelete = (counter_id) => {
         const updatedCounterArray = this.state.counter_array.filter(
             (item) => item.id !== counter_id
@@ -17,9 +20,22 @@ class Counters extends Component {
         this.setState({ counter_array: updatedCounterArray });
         console.log("ID : ", updatedCounterArray);
     };
+    handleReset = () => {
+        const resetCounterArray = this.state.counter_array.map((counter) => {
+            counter.value = 0;
+            return counter;
+        });
+        this.setState({ counter_array: resetCounterArray });
+    };
     render() {
         return (
             <div>
+                <button
+                    className="btn btn-primary btn-sm m-2"
+                    onClick={this.handleReset}
+                >
+                    Reset
+                </button>
                 {this.state.counter_array.map((counterObj) => (
                     <Counter
                         key={counterObj.id}
@@ -31,6 +47,7 @@ class Counters extends Component {
                         //So we must provide another id to reference the component
                         counter={counterObj}
                         onDelete={this.handleDelete}
+                        onIncrement={this.handleIncrement}
                     >
                         {this.state.children_array.map((child) => (
                             <h4 key={child}>{child}</h4> //Children can be accessed using

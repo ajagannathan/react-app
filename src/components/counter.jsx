@@ -3,16 +3,33 @@ import React, { Component } from "react";
 class Counter extends Component {
     //state is a special property is React applications
     //that contains any data the component needs
-    state = {
-        value: this.props.counter.value,
-        //value: this.props.value,
-        tagList: ["tag1", "tag2", "tag3"],
-        //tagList: [],
-    };
-    rendertags() {
-        if (this.state.tagList.length === 0) return <p>No tags</p>;
-        return this.state.tagList.map((tag) => <li key={tag}>{tag}</li>);
-    }
+
+    //This is a local state of the react component
+    //So when the Parent component(Counters) changes its state
+    //the local state of the Counter component does not change
+    //because we dont have a single source of truth. The value in
+    //this state is not connected to the value in the parent component
+    //So we remove this local state and depend on the poroperties
+    //of the Counter(child component) set in Counters' (Parent)state
+    //The Counter receives data from Counters (Parent) and it is
+    //controlled by the parent. Counter raises events which is
+    //handled by the Counters Component
+
+    //This state is executed only once when instance
+    // of the Counter is created
+
+    // state = {
+    //     value: this.props.counter.value,
+    //     //value: this.props.value,
+    //     tagList: ["tag1", "tag2", "tag3"],
+    //     //tagList: [],
+    // };
+
+    // rendertags() {
+    //     if (this.state.tagList.length === 0) return <p>No tags</p>;
+    //     return this.state.tagList.map((tag) => <li key={tag}>{tag}</li>);
+    // }
+
     //if there is a constructor defined, then it should be defined with props as parameter
     //So that the properties could be used to set state {} object
     // constructor(props) {
@@ -22,22 +39,24 @@ class Counter extends Component {
     //         this
     //     );
     // }
-    handleIncrementOnClickEvent() {
-        console.log("Increment clicked");
-        //Since this function id a standalone function object and not an Counter object method
-        //this operator is undefined and thus this line throws error.
-        //One way to solve it is by binding the function to this object in the class constructor
-        console.log(this.state.value);
-    }
+
+    // handleIncrementOnClickEvent() {
+    //     console.log("Increment clicked");
+    //     //Since this function id a standalone function object and not an Counter object method
+    //     //this operator is undefined and thus this line throws error.
+    //     //One way to solve it is by binding the function to this object in the class constructor
+    //     console.log(this.state.value);
+    // }
+
     //Another way to solve the this binding issue is by using arrow functions
-    handleIncrementOnClickEventArrow = (eventArgs) => {
-        //Updating the state is done by using setState() method inherited from Component class
-        //This method tells react that we are updating the state and it brings the DOM in sync with virtual DOM
-        this.setState({ value: this.state.value + 1 });
-        console.log(
-            `Arrow click ${this.state.value} event args : ${eventArgs}`
-        );
-    };
+    // handleIncrementOnClickEventArrow = (eventArgs) => {
+    //     //Updating the state is done by using setState() method inherited from Component class
+    //     //This method tells react that we are updating the state and it brings the DOM in sync with virtual DOM
+    //     this.setState({ value: this.state.value + 1 });
+    //     console.log(
+    //         `Arrow click ${this.state.value} event args : ${eventArgs}`
+    //     );
+    // };
 
     render() {
         // this.props is javascript object that holds attributes of the counter generated in counters.jsx
@@ -64,11 +83,12 @@ class Counter extends Component {
                     {this.validateCount()}
                 </span>
                 <button
-                    onClick={() =>
-                        this.handleIncrementOnClickEventArrow("sampleEventArgs")
-                    } //We pass reference to the function and dont call
+                    // onClick={() =>
+                    //     this.handleIncrementOnClickEventArrow("sampleEventArgs")
+                    // } //We pass reference to the function and dont call
                     //But what if we want to pass event arguments? then we use arrow functions inline as shown above
                     className="btn btn-secondary btn-sm"
+                    onClick={() => this.props.onIncrement(this.props.counter)}
                 >
                     Increment
                 </button>
@@ -94,12 +114,13 @@ class Counter extends Component {
     }
     getClassType() {
         let className = "badge m-2 badge-";
-        className += this.state.value === 0 ? "danger" : "success";
+        //className += this.state.value === 0 ? "danger" : "success";
+        className += this.props.counter.value === 0 ? "danger" : "success";
         return className;
     }
 
     validateCount() {
-        const { value: count } = this.state;
+        const { value: count } = this.props.counter;
         return count === 0 ? "Zero" : count;
     }
 }
